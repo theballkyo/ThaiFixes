@@ -1,7 +1,9 @@
-/*
-!src/
-!src/*
-!build.gradle
-!LICENSE
-!README.md
-!.gitignore
+.gradle/
+.idea/
+build/
+eclipse/
+out/
+run/
+*.iml
+*.ipr
+*.iws

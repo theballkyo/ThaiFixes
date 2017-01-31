@@ -1,69 +1,58 @@
 buildscript {
     repositories {
-        mavenCentral()
+        jcenter()
         maven {
             name = "forge"
             url = "http://files.minecraftforge.net/maven"
         }
-        maven {
-            name = "sonatype"
-            url = "https://oss.sonatype.org/content/repositories/snapshots/"
-        }
     }
     dependencies {
-        classpath 'net.minecraftforge.gradle:ForgeGradle:1.2-SNAPSHOT'
+        classpath 'net.minecraftforge.gradle:ForgeGradle:2.2-SNAPSHOT'
     }
 }
+
+apply plugin: 'net.minecraftforge.gradle.forge'
 
 apply plugin: 'java'
 
 compileJava {
-	options.encoding = 'UTF-8'
-	sourceCompatibility = 1.7
-	targetCompatibility = 1.7
+    options.encoding = 'UTF-8'
+    sourceCompatibility = 1.7
+    targetCompatibility = 1.7
 }
 
 jar {
-	manifest {
-		attributes 'FMLAT': 'thaifixes_at.cfg'
-		attributes 'FMLCorePlugin': 'com.lion328.thaifixes.coremod.ThaiFixesLoader'
-		attributes 'FMLCorePluginContainsFMLMod': 'true'
-	}
+    manifest {
+        attributes 'FMLCorePlugin': 'com.lion328.thaifixes.coremod.CoremodLoader'
+        attributes 'FMLCorePluginContainsFMLMod': 'true'
+    }
 }
 
-apply plugin: 'forge'
-
-version = "v1.8-2.2-pre2"
+version = "4.2-1.10.2"
 group = "com.lion328.thaifixes"
-archivesBaseName = "ThaiFixes"
+archivesBaseName = "thaifixes"
 
 minecraft {
-    version = "1.8-11.14.1.1334"
-    runDir = "eclipse"
+    version = "1.11-13.19.1.2188"
+    runDir = "run"
 
-    mappings = "snapshot_nodoc_20141130"
+    mappings = "snapshot_20161111"
 
-	replace "%VERSION%", project.version
-	replace "%MCVERSION%", project.minecraft.version
-	replace "OBFUSCATED = false", "OBFUSCATED = true"
-	replaceIn "ThaiFixesCore.java"
+    replace "%VERSION%", project.version
+    replace "%MCVERSION%", project.minecraft.version
+    replaceIn "ModInformation.java"
 }
 
-processResources
-{
-    // this will ensure that this task is redone when the versions change.
+processResources {
     inputs.property "version", project.version
     inputs.property "mcversion", project.minecraft.version
 
-    // replace stuff in mcmod.info, nothing else
     from(sourceSets.main.resources.srcDirs) {
         include 'mcmod.info'
-                
-        // replace version and mcversion
-        expand 'version':project.version, 'mcversion':project.minecraft.version
+
+        expand 'version': project.version, 'mcversion': project.minecraft.version
     }
-        
-    // copy everything else, thats not the mcmod.info
+
     from(sourceSets.main.resources.srcDirs) {
         exclude 'mcmod.info'
     }
